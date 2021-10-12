@@ -106,56 +106,56 @@ def poker_test(buf):#Покер тест
     x_6 = Normolaze(buf, x_6)
     x_7 = Normolaze(buf, x_7)
     x_8 = Normolaze(buf, x_8)
-    print(x_8)
-    print(x_8_pheory)
+    #print(x_8)
+    #print(x_8_pheory)
     X_2 = (((x_1 - x_1_pheory) ** 2)/x_1_pheory) + (((x_2 - x_2_pheory) ** 2)/x_2_pheory) + (((x_3 - x_3_pheory) ** 2)/x_3_pheory) + (((x_5 - x_5_pheory) ** 2)/x_5_pheory) + (((x_6 - x_6_pheory) ** 2)/x_6_pheory) + (((x_7 - x_7_pheory) ** 2)/x_7_pheory) + (((x_8 - x_8_pheory) ** 2)/x_8_pheory)
     
     return X_2
    
 def fric_test(buf):#Частотный тест
+    bufer = buf.copy()
+    for i in range(0, len(bufer)):
+        bufer[i] = bufer[i]/m
     
-    for i in range(0, len(buf)):
-        buf[i] = buf[i]/m
-    
-    plt.plot(buf)
+    plt.plot(bufer)
     plt.show()
     
-    P_teor = 0.1
     drob = 0.1
     #P_teor = len(buf)/10
     x_1 = x_2 = x_3 = x_4 = x_5 = x_6 = x_7 = x_8 = x_9 = x_10 = 0
-    for i in range(0, len(buf)):
-        if buf[i] <= drob:
+    for i in range(0, len(bufer)):
+        if bufer[i] <= drob:
             x_1 += 1
-        elif (buf[i] > drob and buf[i] <= (drob * 2)):
+        elif (bufer[i] > drob and bufer[i] <= (drob * 2)):
             x_2 += 1
-        elif (buf[i] > drob * 2 and buf[i] <= (drob * 3)):
+        elif (bufer[i] > drob * 2 and bufer[i] <= (drob * 3)):
             x_3 += 1
-        elif (buf[i] > drob * 3 and buf[i] <= (drob * 4)):
+        elif (bufer[i] > drob * 3 and bufer[i] <= (drob * 4)):
             x_4 += 1
-        elif (buf[i] > drob * 4 and buf[i] <= (drob * 5)):
+        elif (bufer[i] > drob * 4 and bufer[i] <= (drob * 5)):
             x_5 += 1
-        elif (buf[i] > drob * 5 and buf[i] <= (drob * 6)):
+        elif (bufer[i] > drob * 5 and bufer[i] <= (drob * 6)):
             x_6 += 1
-        elif (buf[i] > drob * 6 and buf[i] <= (drob * 7)):
+        elif (bufer[i] > drob * 6 and bufer[i] <= (drob * 7)):
             x_7 += 1
-        elif (buf[i] > drob * 7 and buf[i] <= (drob * 8)):
+        elif (bufer[i] > drob * 7 and bufer[i] <= (drob * 8)):
             x_8 += 1
-        elif (buf[i] > drob * 8 and buf[i] <= (drob * 9)):
+        elif (bufer[i] > drob * 8 and bufer[i] <= (drob * 9)):
             x_9 += 1
-        elif (buf[i] > drob * 9 and buf[i] <= (drob * 10)):
+        elif (bufer[i] > drob * 9 and bufer[i] <= (drob * 10)):
             x_10 += 1
-            
-    x_1 = x_1/len(buf)
-    x_2 = x_2/len(buf)
-    x_3 = x_3/len(buf)
-    x_4 = x_4/len(buf)
-    x_5 = x_5/len(buf)
-    x_6 = x_6/len(buf)
-    x_7 = x_7/len(buf)
-    x_8 = x_8/len(buf)
-    x_9 = x_9/len(buf)
-    x_10 = x_10/len(buf)
+         
+    P_teor = len(bufer) / 10
+   # x_1 = x_1/len(buf)
+    #x_2 = x_2/len(buf)
+    #x_3 = x_3/len(buf)
+   # x_4 = x_4/len(buf)
+    #x_5 = x_5/len(buf)
+    #x_6 = x_6/len(buf)
+    #x_7 = x_7/len(buf)
+    #x_8 = x_8/len(buf)
+    #x_9 = x_9/len(buf)
+    #x_10 = x_10/len(buf)
         
     X_2 = (((x_1 - P_teor) ** 2)/P_teor) + (((x_2 - P_teor) ** 2)/P_teor) + (((x_3 - P_teor) ** 2)/P_teor) + (((x_4 - P_teor) ** 2)/P_teor) + (((x_5 - P_teor) ** 2)/P_teor) + (((x_6 - P_teor) ** 2)/P_teor) + (((x_7 - P_teor) ** 2)/P_teor) + (((x_8 - P_teor) ** 2)/P_teor) + (((x_9 - P_teor) ** 2)/P_teor)  + (((x_10 - P_teor) ** 2)/P_teor)
         
@@ -179,45 +179,95 @@ def CountFrequency(my_list):
 
   
 
-    for key, value in freq.items():
+    #for key, value in freq.items():
 
-        print ("% s : % d"%(key, value))
+     #   print ("% s : % d"%(key, value))
+        
+    return freq
   
 def serial_test(buf):#Cериальный тест
-    
+    bufer = buf.copy()
     drob = m / 10 
     
     buf_new = []
     
     for i in range(0, len(buf)):
-        if buf[i] <= drob:
-            buf[i] = 0
-        elif (buf[i] > drob and buf[i] <= (drob * 2)):
-            buf[i] = 1
-        elif (buf[i] > drob * 2 and buf[i] <= (drob * 3)):
-            buf[i] = 2
-        elif (buf[i] > drob * 3 and buf[i] <= (drob * 4)):
-            buf[i] = 3
-        elif (buf[i] > drob * 4 and buf[i] <= (drob * 5)):
-            buf[i] = 4
-        elif (buf[i] > drob * 5 and buf[i] <= (drob * 6)):
-            buf[i] = 5
-        elif (buf[i] > drob * 6 and buf[i] <= (drob * 7)):
-            buf[i] = 6
-        elif (buf[i] > drob * 7 and buf[i] <= (drob * 8)):
-            buf[i] = 7
-        elif (buf[i] > drob * 8 and buf[i] <= (drob * 9)):
-            buf[i] = 8
-        elif (buf[i] > drob * 9 and buf[i] <= (drob * 10)):
-            buf[i] = 9
-    for i in range(0, len(buf)):
-        buf[i] = str(buf[i])
-    for i in range(0, len(buf), 2):
-        buf_new.append(buf[i] + buf[i + 1])
+        if bufer[i] <= drob:
+            bufer[i] = 0
+        elif (bufer[i] > drob and bufer[i] <= (drob * 2)):
+            bufer[i] = 1
+        elif (bufer[i] > drob * 2 and bufer[i] <= (drob * 3)):
+            bufer[i] = 2
+        elif (bufer[i] > drob * 3 and bufer[i] <= (drob * 4)):
+            bufer[i] = 3
+        elif (bufer[i] > drob * 4 and bufer[i] <= (drob * 5)):
+            bufer[i] = 4
+        elif (bufer[i] > drob * 5 and bufer[i] <= (drob * 6)):
+            bufer[i] = 5
+        elif (bufer[i] > drob * 6 and bufer[i] <= (drob * 7)):
+            bufer[i] = 6
+        elif (bufer[i] > drob * 7 and bufer[i] <= (drob * 8)):
+            bufer[i] = 7
+        elif (bufer[i] > drob * 8 and bufer[i] <= (drob * 9)):
+            bufer[i] = 8
+        elif (bufer[i] > drob * 9 and bufer[i] <= (drob * 10)):
+            bufer[i] = 9
+    for i in range(0, len(bufer)):
+        bufer[i] = str(bufer[i])
+    for i in range(0, len(bufer), 2):
+        buf_new.append(bufer[i] + bufer[i + 1])
+
+    X_2 = 0
+    freq = CountFrequency(buf_new)
+    P_teorp = len(bufer)/(2 * 100)
+    for key, value in freq.items():
+        X_2 += (((value - P_teorp) ** 2) / P_teorp)
+    
+    return X_2
+
+def cor_test(buf):
+    
+    bufer = buf.copy()
+    key = []
+    for i in range(0, len(bufer)):
+        key.append(bin(i))
+    key = ''.join(key)
+    key = key.replace('b', '')
+    #print(key)  
+    sum_key = 0
+    sum_key_1 = 0
+    key_1= str(key[-1]+key[:(len(key)-1)])
+    
+    for i in range(len(key)):
+        sum_key+=int(key[i])
+    for i in range(len(key_1)):
+        sum_key_1+=int(key_1[i])
+    
+    top_sum_1=0
+    low_sum_1=0
+    low_sum_2=0
+    
+    for i in range(len(key)):
+        top_sum_1+=(int(key[i])*int(key_1[i]))
+    for i in range(len(key)):
+        low_sum_1+=(int(key[i])**2)
+    for i in range(len(key)):
+        low_sum_2+=(int(key_1[i])**2) 
+        
+    R= ((len(key)*top_sum_1) - (sum_key*sum_key_1))/pow(((len(key)*low_sum_1 - sum_key**2)*((len(key)*low_sum_2) - sum_key_1**2)), 0.5)
+    R_mod =(1/(len(key)-1))+(2/(len(key)-2))*pow(((len(key))*((len(key))-3))/(len(key)+1) , 0.5)
+    print(f'Коэффициент автокорреляции при k=1:{R}')
+    print(f'Модульное значение (8):{R_mod}') 
+
+def interval_dov(buf):
+    bufer = buf.copy()
+    random_numbers = np.random.normal(loc = 0.0, scale = 1.0, size = len(bufer))
+   # for i in range(0, len(bufer)):
+   #     
+   #     random_numbers[i] = ((random_numbers[i] + max(random_numbers))/(max(random_numbers) - min(random_numbers))
+    #min(random_numbers))
     
     
-    CountFrequency(buf_new)
-#    return buf_new
 
 x_0 = 19
 #a = 52#a- 1 кратно p для любого простого p# равенство длинны последовательности достигается при а = 1, а = 270, a= 539  
@@ -235,9 +285,11 @@ while (x_0 not in buf) and (counter != 10000):# ограничение по на
 #print(counter_2)
 #print(buf)
 #print(poker_test(buf))
-#print(f'Значение Хи квадрат из частотного теста:{fric_test(buf)}')
-#print(f'Значение Хи квадрат из покер теста:{poker_test(buf)}')
-#print(f'Значение Хи квадрат из сериального теста теста:{serial_test(buf)}')
+print(f'Значение Хи квадрат из частотного теста:{fric_test(buf)}')
+print(f'Значение Хи квадрат из покер теста:{poker_test(buf)}')
+print(f'Значение Хи квадрат из сериального теста теста:{serial_test(buf)}')
+cor_test(buf)
+interval_dov(buf)
 
 
 
