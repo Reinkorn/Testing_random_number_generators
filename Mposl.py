@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Sep 14 16:40:51 2021
+Created on Mon Sep 27 19:36:18 2021
 
 @author: gorod
 """
+import random
 import numpy as np
 import matplotlib.pyplot as plt
-#import pandas as pd
-
 
 def resultOfTurn(results, cards):
         
@@ -44,7 +43,7 @@ def poker_test(buf):#Покер тест
     x_1_pheory = 1/(d ** 4)
     x_2_pheory = (5 * (d - 1))/(d ** 4)
     x_3_pheory = (10 * (d - 1))/(d ** 4)
-    #x_4_pheory = 10/(d ** 5)
+    x_4_pheory = 0.04
     x_5_pheory = (10 * (d - 1) * (d - 2))/(d ** 4)
     x_6_pheory = (15 * (d - 1) * (d - 2))/(d ** 4)
     x_7_pheory = (10 * (d - 1) * (d - 2) * (d - 3))/(d ** 4)
@@ -99,6 +98,7 @@ def poker_test(buf):#Покер тест
             x_7 += 1
         elif resultOfTurn(dictionaryOfResults, cards) == "Nothing":
             x_8 += 1
+    #print(x_4)
     x_1 = Normolaze(bufer, x_1)
     x_2 = Normolaze(bufer, x_2)
     x_3 = Normolaze(bufer, x_3)
@@ -109,14 +109,15 @@ def poker_test(buf):#Покер тест
     x_8 = Normolaze(bufer, x_8)
     #print(x_8)
     #print(x_8_pheory)
-    X_2 = (((x_1 - x_1_pheory) ** 2)/x_1_pheory) + (((x_2 - x_2_pheory) ** 2)/x_2_pheory) + (((x_3 - x_3_pheory) ** 2)/x_3_pheory) + (((x_5 - x_5_pheory) ** 2)/x_5_pheory) + (((x_6 - x_6_pheory) ** 2)/x_6_pheory) + (((x_7 - x_7_pheory) ** 2)/x_7_pheory) + (((x_8 - x_8_pheory) ** 2)/x_8_pheory)
+    X_2 = (((x_1 - x_1_pheory) ** 2)/x_1_pheory) + (((x_2 - x_2_pheory) ** 2)/x_2_pheory) + (((x_3 - x_3_pheory) ** 2)/x_3_pheory) + (((x_4 - x_4_pheory) ** 2)/x_4_pheory) +(((x_5 - x_5_pheory) ** 2)/x_5_pheory) + (((x_6 - x_6_pheory) ** 2)/x_6_pheory) + (((x_7 - x_7_pheory) ** 2)/x_7_pheory) + (((x_8 - x_8_pheory) ** 2)/x_8_pheory)
     
     return X_2
 
 def fric_test(buf):#Частотный тест
     bufer = buf.copy()
+    #print(bufer)
     for i in range(0, len(bufer)):
-        bufer[i] = bufer[i]/m
+        bufer[i] = bufer[i]/max(bufer)
     
     plt.plot(bufer)
     plt.show()
@@ -146,17 +147,17 @@ def fric_test(buf):#Частотный тест
         elif (bufer[i] > drob * 9 and bufer[i] <= (drob * 10)):
             x_10 += 1
          
-    P_teor = len(bufer) / 10
-   # x_1 = x_1/len(buf)
-    #x_2 = x_2/len(buf)
-    #x_3 = x_3/len(buf)
-   # x_4 = x_4/len(buf)
-    #x_5 = x_5/len(buf)
-    #x_6 = x_6/len(buf)
-    #x_7 = x_7/len(buf)
-    #x_8 = x_8/len(buf)
-    #x_9 = x_9/len(buf)
-    #x_10 = x_10/len(buf)
+    P_teor = len(bufer) / (len(bufer) * 10)
+    x_1 = x_1/len(buf)
+    x_2 = x_2/len(buf)
+    x_3 = x_3/len(buf)
+    x_4 = x_4/len(buf)
+    x_5 = x_5/len(buf)
+    x_6 = x_6/len(buf)
+    x_7 = x_7/len(buf)
+    x_8 = x_8/len(buf)
+    x_9 = x_9/len(buf)
+    x_10 = x_10/len(buf)
         
     X_2 = (((x_1 - P_teor) ** 2)/P_teor) + (((x_2 - P_teor) ** 2)/P_teor) + (((x_3 - P_teor) ** 2)/P_teor) + (((x_4 - P_teor) ** 2)/P_teor) + (((x_5 - P_teor) ** 2)/P_teor) + (((x_6 - P_teor) ** 2)/P_teor) + (((x_7 - P_teor) ** 2)/P_teor) + (((x_8 - P_teor) ** 2)/P_teor) + (((x_9 - P_teor) ** 2)/P_teor)  + (((x_10 - P_teor) ** 2)/P_teor)
         
@@ -188,8 +189,9 @@ def CountFrequency(my_list):
   
 def serial_test(buf):#Cериальный тест
     bufer = buf.copy()
-    drob = m / 10 
-    
+
+    drob = max(bufer) / 10 
+    #print(len(bufer))
     buf_new = []
     
     for i in range(0, len(buf)):
@@ -261,47 +263,74 @@ def cor_test(buf):
     print(f'Модульное значение (8):{R_mod}') 
 
 def interval_dov(buf):
+
     bufer = buf.copy()
-    
+    #print(bufer)
     for i in range(0, len(bufer)):
-        bufer[i] = bufer[i] / m
+        bufer[i] = (bufer[i] / 63)
     
     middle = sum(bufer)/len(bufer)
     alpha = 0.05
     M_teor = 0.5
-    d_pr = middle - M_teor
+    d_pr = M_teor - middle 
     d_cr = np.sqrt(np.var(bufer)/(len(bufer) * alpha))
     
     print(f"Практическое значение интервала {d_pr}")
     print(f"Критическое значение значение интервала {d_cr}")
-        
-        
-   #     random_numbers[i] = ((random_numbers[i] + max(random_numbers))/(max(random_numbers) - min(random_numbers))
-    #min(random_numbers))
-    
-    
 
-x_0 = 19
-#a = 52#a- 1 кратно p для любого простого p# равенство длинны последовательности достигается при а = 1, а = 270, a= 539  
-m = (2 ** 31) - 1#269
-c = int(m / 5) #53
-a = (7 ** 5)#270 
+def key_generation(len_message_binary):
+    k = int(33)
+    key_list_10 = []
+    key_list = []
+    registor = []
+    #input_file_key = (open('File/key.txt','w+',encoding='utf-8'))
+    #input_file_key_1 = (open('File/key_1.txt','w+',encoding='utf-8'))
+    condition=["0", "1"]
+    
+    v = str(input(f'Загрузить начальные значения регистра из файла?(y/n):'))
+    if (v == "y"):        
+        input_file_registor = (open('D:/Ysceba/Карпов Иммитационное моделирование/registor.txt','r',encoding='utf-8'))
+        registor_str = input_file_registor.read()
+        registor = list(registor_str)
+        #print(f'Начальное состояние регистра:{registor}')
+        input_file_registor.close()
+    else:
+        input_file_registor = (open('D:/Ysceba/Карпов Иммитационное моделирование/registor.txt','w+',encoding='utf-8'))
+        registor = random.choices(condition, k= 33)
+        registor_str ="".join(registor)
+        input_file_registor.write(registor_str)
+        #print(f'Начальное состояние регистра:{registor}')
+    for i in range(len_message_binary+k):#формирование ключевой последовательности
+        key_list.append(registor[-1])
+        x1_param = str(int(registor[-1])^int(registor[12]))#P(x)=X^33+x^13+1=0
+        registor.insert(0, x1_param)
+        del registor[-1]
+    #del key_list[-66:-1]#Чтобы убрать значения начальные
+    key_list_str="".join(key_list)
+    
+    #print(f"Ключ:{key_list_str}")
+    key_list_str = key_list_str[k:]
+    print(f"Длинна ключа:{len(key_list_str)}")
+    input_file_registor.close()
+    count = 0
+    str_param = ''
+    for i in range(len(key_list)):
+        count += 1
+        str_param += key_list[i]
+        if count == 6:
+            key_list_10.append(int(str_param, base=2))
+            count = 0
+            str_param = ''
+    #print(key_list_10)
+    #input_file_key.close()
+    return key_list_10[:10000]
 
-counter = 0
-buf = []
-while (x_0 not in buf) and (counter != 10000):# ограничение по набору тестируемых данных
-    buf.append(x_0)
-    x =  ((a * x_0) + c) % m
-    x_0 = x
-    counter += 1
-#print(counter_2)
-#print(buf)
-#print(poker_test(buf))
+buf = key_generation(60000)
+
 print(f'Значение Хи квадрат из частотного теста:{fric_test(buf)}')
 print(f'Значение Хи квадрат из покер теста:{poker_test(buf)}')
 print(f'Значение Хи квадрат из сериального теста теста:{serial_test(buf)}')
 cor_test(buf)
 interval_dov(buf)
-
-
+#print(key)
 
