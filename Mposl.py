@@ -277,7 +277,26 @@ def interval_dov(buf):
     
     print(f"Практическое значение интервала {d_pr}")
     print(f"Критическое значение значение интервала {d_cr}")
-
+    
+    bufer_normal = np.random.normal(loc=0.0, scale=1.0, size=len(bufer))
+    minik = min(bufer_normal)
+    #print(minik)
+    for i in range(0, len(bufer_normal)):
+        bufer_normal[i] = (bufer_normal[i] + np.abs(minik))
+                           
+    maxik = max(bufer_normal)
+    for i in range(0, len(bufer_normal)):
+        bufer_normal[i] = (bufer_normal[i])/maxik
+    
+    middle_normal = sum(bufer_normal)/len(bufer_normal)
+    
+    x_2 = 3.84
+    d_pr_normal = M_teor - middle_normal 
+    d_cr_normal = np.sqrt(x_2 * np.var(bufer_normal)/(len(bufer_normal)))
+    
+    print(f"Практическое значение интервала для нормальных чисел {d_pr_normal}")
+    print(f"Критическое значение значение интервала для нормальных чисел {d_cr_normal}")
+    
 def key_generation(len_message_binary):
     k = int(33)
     key_list_10 = []
