@@ -7,6 +7,9 @@ Created on Mon Sep 27 19:36:18 2021
 import random
 import numpy as np
 import matplotlib.pyplot as plt
+from random import gauss
+from pandas import Series
+from matplotlib import *
 
 def resultOfTurn(results, cards):
         
@@ -26,6 +29,18 @@ def resultOfTurn(results, cards):
             #Наибольший результат.
             return results[max([cards.count(c) for c in cards])]
         
+def nor_plt(buf):
+    series = buf.copy()
+    # create white noise series
+    series = Series(series)
+    print(series.describe())
+    series.plot()
+    pyplot.show()
+    
+    # histogram plot
+    series.hist()
+    pyplot.show()
+
 def Normolaze(buf, x):
     x = x/int(len(buf)/5) 
     return x
@@ -116,8 +131,11 @@ def poker_test(buf):#Покер тест
 def fric_test(buf):#Частотный тест
     bufer = buf.copy()
     #print(bufer)
+    maxik = max(bufer)
+    
     for i in range(0, len(bufer)):
-        bufer[i] = bufer[i]/max(bufer)
+        bufer[i] = bufer[i]/maxik
+    
     
     plt.plot(bufer)
     plt.show()
@@ -147,17 +165,18 @@ def fric_test(buf):#Частотный тест
         elif (bufer[i] > drob * 9 and bufer[i] <= (drob * 10)):
             x_10 += 1
          
-    P_teor = len(bufer) / (len(bufer) * 10)
-    x_1 = x_1/len(buf)
-    x_2 = x_2/len(buf)
-    x_3 = x_3/len(buf)
-    x_4 = x_4/len(buf)
-    x_5 = x_5/len(buf)
-    x_6 = x_6/len(buf)
-    x_7 = x_7/len(buf)
-    x_8 = x_8/len(buf)
-    x_9 = x_9/len(buf)
-    x_10 = x_10/len(buf)
+    P_teor = len(bufer) / (len(bufer)*(10))
+    print(P_teor)
+    x_1 = x_1/len(bufer)
+    x_2 = x_2/len(bufer)
+    x_3 = x_3/len(bufer)
+    x_4 = x_4/len(bufer)
+    x_5 = x_5/len(bufer)
+    x_6 = x_6/len(bufer)
+    x_7 = x_7/len(bufer)
+    x_8 = x_8/len(bufer)
+    x_9 = x_9/len(bufer)
+    x_10 = x_10/len(bufer)
         
     X_2 = (((x_1 - P_teor) ** 2)/P_teor) + (((x_2 - P_teor) ** 2)/P_teor) + (((x_3 - P_teor) ** 2)/P_teor) + (((x_4 - P_teor) ** 2)/P_teor) + (((x_5 - P_teor) ** 2)/P_teor) + (((x_6 - P_teor) ** 2)/P_teor) + (((x_7 - P_teor) ** 2)/P_teor) + (((x_8 - P_teor) ** 2)/P_teor) + (((x_9 - P_teor) ** 2)/P_teor)  + (((x_10 - P_teor) ** 2)/P_teor)
         
@@ -267,7 +286,7 @@ def interval_dov(buf):
     bufer = buf.copy()
     #print(bufer)
     for i in range(0, len(bufer)):
-        bufer[i] = (bufer[i] / 63)
+        bufer[i] = (bufer[i] / max(bufer))
     
     middle = sum(bufer)/len(bufer)
     alpha = 0.05
@@ -298,7 +317,7 @@ def interval_dov(buf):
     print(f"Критическое значение значение интервала для нормальных чисел {d_cr_normal}")
     
 def key_generation(len_message_binary):
-    k = int(33)
+    k = int(127)
     key_list_10 = []
     key_list = []
     registor = []
@@ -315,13 +334,13 @@ def key_generation(len_message_binary):
         input_file_registor.close()
     else:
         input_file_registor = (open('D:/Ysceba/Карпов Иммитационное моделирование/registor.txt','w+',encoding='utf-8'))
-        registor = random.choices(condition, k= 33)
+        registor = random.choices(condition, k= 127)
         registor_str ="".join(registor)
         input_file_registor.write(registor_str)
         #print(f'Начальное состояние регистра:{registor}')
     for i in range(len_message_binary+k):#формирование ключевой последовательности
         key_list.append(registor[-1])
-        x1_param = str(int(registor[-1])^int(registor[12]))#P(x)=X^33+x^13+1=0
+        x1_param = str(int(registor[-1])^int(registor[14]))#P(x)=X^33+x^13+1=0
         registor.insert(0, x1_param)
         del registor[-1]
     #del key_list[-66:-1]#Чтобы убрать значения начальные
@@ -336,20 +355,21 @@ def key_generation(len_message_binary):
     for i in range(len(key_list)):
         count += 1
         str_param += key_list[i]
-        if count == 6:
+        if count == 32:
             key_list_10.append(int(str_param, base=2))
-            count = 0
+            count = 0   
             str_param = ''
     #print(key_list_10)
     #input_file_key.close()
     return key_list_10[:10000]
 
-buf = key_generation(60000)
+buf = key_generation(64000)
 
 print(f'Значение Хи квадрат из частотного теста:{fric_test(buf)}')
 print(f'Значение Хи квадрат из покер теста:{poker_test(buf)}')
-print(f'Значение Хи квадрат из сериального теста теста:{serial_test(buf)}')
+#print(f'Значение Хи квадрат из сериального теста теста:{serial_test(buf)}')
 cor_test(buf)
 interval_dov(buf)
 #print(key)
-
+nor_plt(buf)
+#https://life-prog.ru/1_13822_chastotniy-test.html
