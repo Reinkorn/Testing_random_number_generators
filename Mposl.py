@@ -371,5 +371,5 @@ print(f'Значение Хи квадрат из покер теста:{poker_t
 cor_test(buf)
 interval_dov(buf)
 #print(key)
-nor_plt(buf)
-#https://life-prog.ru/1_13822_chastotniy-test.html
+#nor_plt(buf)
+

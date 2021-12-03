@@ -181,7 +181,6 @@ def CountFrequency(my_list):
   
 
     #for key, value in freq.items():
-
      #   print ("% s : % d"%(key, value))
         
     return freq
